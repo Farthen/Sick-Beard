@@ -33,4 +33,10 @@ procname="*python"
 command=${sickbeard_dir}/SickBeard.py
 command_args="--datadir=${sickbeard_dir} --daemon --pidfile=${pidfile}"
 
+pid=$(check_pidfile $pidfile $command python)
+if [ -z "$pid" ] && [ -f $pidfile ]; then
+  echo "Stale PID file found, removing."
+  rm $pidfile
+fi
+
 run_rc_command "$1"
